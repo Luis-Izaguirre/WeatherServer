@@ -19,6 +19,9 @@ public partial class City
     public decimal Longitude { get; set; }
 
     public int CountryId { get; set; }
+    public required string Name { get; set; }
+
+    public int Population { get; set; }
 
     [ForeignKey("CityId")]
     [InverseProperty("City")]
