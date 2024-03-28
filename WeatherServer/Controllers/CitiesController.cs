@@ -53,7 +53,7 @@ namespace WeatherServer.Controllers
                     {
                         Name = c.Name,
                         CountryId = c.CountryId,
-                        //Population = c.Cities.Sum(t => t.Population)
+                        Population = c.Cities.Sum(t => t.Population)
                     });
 
             return await x.ToListAsync();

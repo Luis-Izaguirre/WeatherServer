@@ -24,6 +24,9 @@ public partial class Country
     [Unicode(false)]
     public string Iso3 { get; set; } = null!;
 
+    //"CityNavigation"
     [InverseProperty("CityNavigation")]
-    public virtual City? City { get; set; }
+
+    public virtual ICollection<City> Cities { get; set;} = new List<City>();
+    //public virtual City? City { get; set; }
 }

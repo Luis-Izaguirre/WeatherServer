@@ -24,7 +24,9 @@ public partial class City
     public int Population { get; set; }
 
     //This is different 
-    [ForeignKey("CityId")]
-    [InverseProperty("City")]
+    //[ForeignKey("CityId")]
+    //[InverseProperty("City")]
+    [ForeignKey("CountryId")]
+    [InverseProperty("Cities")]
     public virtual Country CityNavigation { get; set; } = null!;
 }

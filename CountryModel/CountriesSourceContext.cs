@@ -31,16 +31,16 @@ public partial class CountriesSourceContext : DbContext
         optionsBuilder.UseSqlServer(config.GetConnectionString("DefaultConnection"));
     }
 
-
+    //This may have the bug (FIXME)
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<City>(entity =>
         {
             entity.HasKey(e => e.CityId).HasName("PK__City__F2D21B76EBDF5BD8");
 
-            entity.Property(e => e.CityId).ValueGeneratedOnAdd();
+            //entity.Property(e => e.CityId).ValueGeneratedOnAdd();
 
-            entity.HasOne(d => d.CityNavigation).WithOne(p => p.City)
+            entity.HasOne(d => d.CityNavigation).WithMany(p => p.Cities)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_City_Country");
         });
