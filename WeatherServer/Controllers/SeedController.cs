@@ -10,6 +10,7 @@ using CsvHelper.Configuration;
 using System.Globalization;
 using CsvHelper;
 using Microsoft.Extensions.Hosting;
+using WeatherServer.Data;
 
 namespace WeatherServer.Controllers
 {

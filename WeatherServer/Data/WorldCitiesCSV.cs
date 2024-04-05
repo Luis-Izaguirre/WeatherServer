@@ -1,4 +1,4 @@
-﻿namespace WeatherServer.Controllers
+﻿namespace WeatherServer.Data
 {
     internal class WorldCitiesCsv
     {
