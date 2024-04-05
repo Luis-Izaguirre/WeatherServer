@@ -19,14 +19,13 @@ public partial class City
     public decimal Longitude { get; set; }
 
     public int CountryId { get; set; }
-    public required string Name { get; set; }
+
+    [Unicode(false)]
+    public string Name { get; set; } = null!;
 
     public int Population { get; set; }
 
-    //This is different 
-    //[ForeignKey("CityId")]
-    //[InverseProperty("City")]
     [ForeignKey("CountryId")]
     [InverseProperty("Cities")]
-    public virtual Country CityNavigation { get; set; } = null!;
+    public virtual Country Country { get; set; } = null!;
 }

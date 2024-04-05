@@ -13,7 +13,7 @@ namespace WeatherServer.Controllers
     //This is the url that you will invoke from the client.
     [Route("api/[controller]")]
     [ApiController]
-    public class CitiesController(CountriesSourceContext context) : ControllerBase
+    public class CitiesController(CountriesSilverContext context) : ControllerBase
     {
 
         // GET: api/Cities

@@ -10,16 +10,16 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CountryModel.Migrations
 {
-    [DbContext(typeof(CountriesSourceContext))]
-    [Migration("20240302043756_Initial")]
-    partial class Initial
+    [DbContext(typeof(CountriesSilverContext))]
+    [Migration("20240405033101_city-update")]
+    partial class cityupdate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.2")
+                .HasAnnotation("ProductVersion", "8.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -30,6 +30,8 @@ namespace CountryModel.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CityId"));
+
                     b.Property<int>("CountryId")
                         .HasColumnType("int");
 
@@ -39,8 +41,18 @@ namespace CountryModel.Migrations
                     b.Property<decimal>("Longitude")
                         .HasColumnType("numeric(18, 4)");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(max)");
+
+                    b.Property<int>("Population")
+                        .HasColumnType("int");
+
                     b.HasKey("CityId")
-                        .HasName("PK__City__F2D21B76EBDF5BD8");
+                        .HasName("PK_City");
+
+                    b.HasIndex("CountryId");
 
                     b.ToTable("City");
                 });
@@ -69,30 +81,29 @@ namespace CountryModel.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(20)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(20)");
+                        .HasColumnType("varchar(max)");
 
                     b.HasKey("CountryId")
-                        .HasName("PK__Country__10D1609F4ACB716B");
+                        .HasName("PK_Country");
 
                     b.ToTable("Country");
                 });
 
             modelBuilder.Entity("CountryModel.City", b =>
                 {
-                    b.HasOne("CountryModel.Country", "CityNavigation")
-                        .WithOne("City")
-                        .HasForeignKey("CountryModel.City", "CityId")
+                    b.HasOne("CountryModel.Country", "Country")
+                        .WithMany("Cities")
+                        .HasForeignKey("CountryId")
                         .IsRequired()
                         .HasConstraintName("FK_City_Country");
 
-                    b.Navigation("CityNavigation");
+                    b.Navigation("Country");
                 });
 
             modelBuilder.Entity("CountryModel.Country", b =>
                 {
-                    b.Navigation("City");
+                    b.Navigation("Cities");
                 });
 #pragma warning restore 612, 618
         }

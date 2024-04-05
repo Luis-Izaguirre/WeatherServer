@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CountryModel.Migrations
 {
-    [DbContext(typeof(CountriesSourceContext))]
-    partial class CountriesSourceContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(CountriesSilverContext))]
+    partial class CountriesSilverContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -40,13 +40,14 @@ namespace CountryModel.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(max)");
 
                     b.Property<int>("Population")
                         .HasColumnType("int");
 
                     b.HasKey("CityId")
-                        .HasName("PK__City__F2D21B76EBDF5BD8");
+                        .HasName("PK_City");
 
                     b.HasIndex("CountryId");
 
@@ -81,20 +82,20 @@ namespace CountryModel.Migrations
                         .HasColumnType("varchar(max)");
 
                     b.HasKey("CountryId")
-                        .HasName("PK__Country__10D1609F4ACB716B");
+                        .HasName("PK_Country");
 
                     b.ToTable("Country");
                 });
 
             modelBuilder.Entity("CountryModel.City", b =>
                 {
-                    b.HasOne("CountryModel.Country", "CityNavigation")
+                    b.HasOne("CountryModel.Country", "Country")
                         .WithMany("Cities")
                         .HasForeignKey("CountryId")
                         .IsRequired()
                         .HasConstraintName("FK_City_Country");
 
-                    b.Navigation("CityNavigation");
+                    b.Navigation("Country");
                 });
 
             modelBuilder.Entity("CountryModel.Country", b =>

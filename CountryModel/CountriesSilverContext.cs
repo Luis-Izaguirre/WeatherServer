@@ -5,13 +5,13 @@ using Microsoft.Extensions.Configuration;
 
 namespace CountryModel;
 
-public partial class CountriesSourceContext : DbContext
+public partial class CountriesSilverContext : DbContext
 {
-    public CountriesSourceContext()
+    public CountriesSilverContext()
     {
     }
 
-    public CountriesSourceContext(DbContextOptions<CountriesSourceContext> options)
+    public CountriesSilverContext(DbContextOptions<CountriesSilverContext> options)
         : base(options)
     {
     }
@@ -31,24 +31,19 @@ public partial class CountriesSourceContext : DbContext
         optionsBuilder.UseSqlServer(config.GetConnectionString("DefaultConnection"));
     }
 
-    //This may have the bug (FIXME)
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<City>(entity =>
         {
-            entity.HasKey(e => e.CityId).HasName("PK__City__F2D21B76EBDF5BD8");
-
-            //entity.Property(e => e.CityId).ValueGeneratedOnAdd();
-
-            entity.HasOne(d => d.CityNavigation).WithMany(p => p.Cities)
+            entity.HasKey(c => c.CityId).HasName("PK_City");
+            entity.HasOne(d => d.Country).WithMany(p => p.Cities)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_City_Country");
         });
 
         modelBuilder.Entity<Country>(entity =>
         {
-            entity.HasKey(e => e.CountryId).HasName("PK__Country__10D1609F4ACB716B");
-
+            entity.HasKey(e => e.CountryId).HasName("PK_Country");
             entity.Property(e => e.Iso2).IsFixedLength();
             entity.Property(e => e.Iso3).IsFixedLength();
         });

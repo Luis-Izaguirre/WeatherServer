@@ -12,7 +12,6 @@ public partial class Country
     [Key]
     public int CountryId { get; set; }
 
-    //[StringLength(50)]
     [Unicode(false)]
     public string Name { get; set; } = null!;
 
@@ -24,9 +23,6 @@ public partial class Country
     [Unicode(false)]
     public string Iso3 { get; set; } = null!;
 
-    //"CityNavigation"
-    [InverseProperty("CityNavigation")]
-
-    public virtual ICollection<City> Cities { get; set;} = new List<City>();
-    //public virtual City? City { get; set; }
+    [InverseProperty("Country")]
+    public virtual ICollection<City> Cities { get; set; } = new List<City>();
 }

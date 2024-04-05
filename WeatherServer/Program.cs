@@ -12,7 +12,7 @@ builder.Services.AddSwaggerGen();
 
 //WE NEED TO ADD DBCONTEXT SERVICE IN HERE
 
-builder.Services.AddDbContext<CountriesSourceContext>(options => 
+builder.Services.AddDbContext<CountriesSilverContext>(options => 
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 

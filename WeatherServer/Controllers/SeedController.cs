@@ -8,19 +8,19 @@ using Microsoft.EntityFrameworkCore;
 using CountryModel;
 using CsvHelper.Configuration;
 using System.Globalization;
-using WeatherServer.Data;
 using CsvHelper;
+using Microsoft.Extensions.Hosting;
 
 namespace WeatherServer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SeedController(CountriesSourceContext db, IHostEnvironment environment) : ControllerBase
+    public class SeedController(CountriesSilverContext db, IHostEnvironment environment) : ControllerBase
     {
         private readonly string _pathName = Path.Combine(environment.ContentRootPath, "Data/worldcities.csv");
 
         [HttpPost("City")]
-        public async Task<ActionResult<City>> SeedCity()
+        public async Task<IActionResult> SeedCity()
         {
             Dictionary<string, Country> countries = await db.Countries//.AsNoTracking()
              .ToDictionaryAsync(c => c.Name);

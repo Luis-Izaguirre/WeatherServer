@@ -5,7 +5,7 @@
 namespace CountryModel.Migrations
 {
     /// <inheritdoc />
-    public partial class StringNameupdate : Migration
+    public partial class cityupdate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
