@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CountryModel;
 using WeatherServer.DTO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WeatherServer.Controllers
 {
@@ -22,6 +23,12 @@ namespace WeatherServer.Controllers
         {
             return await context.Cities.ToListAsync();
         }
+
+        //Totday lecture 04/12/24
+        //If not authenticated we get error 401 unauthorized, not logged in (unauthenticated), 403 Forbidden  (unauthorized), 404 page not found
+        //We need an attribute called authorized,
+        [Authorize]
+
 
         // GET: api/Population returns the same thing not just 
         [HttpGet("GetPopulation")]

@@ -11,16 +11,50 @@ using System.Globalization;
 using CsvHelper;
 using Microsoft.Extensions.Hosting;
 using WeatherServer.Data;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 
 namespace WeatherServer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SeedController(CountriesSilverContext db, IHostEnvironment environment) : ControllerBase
+    
+    //Need User manager???? maybe dependency injection, changed here
+    public class SeedController(CountriesSilverContext db, IHostEnvironment environment,
+        UserManager<WorldCitiesUser> userManager) : ControllerBase
     {
         private readonly string _pathName = Path.Combine(environment.ContentRootPath, "Data/worldcities.csv");
 
-        [HttpPost("City")]
+
+        //No SQL, Here if we do we will get a C. Never read data from identity tables in models using identity.framework tools.
+        
+        [HttpPost("User")]
+        public async Task<ActionResult> SeedUser()
+           {
+            (string name, string email) = ("user1", "comp584@csun.edu");
+        WorldCitiesUser user = new()
+        {
+            UserName = name,
+            Email = email,
+            SecurityStamp = Guid.NewGuid().ToString()
+        };
+        if (await userManager.FindByNameAsync(name) is not null)
+        {
+            user.UserName = "user2";
+        }
+        _ = await userManager.CreateAsync(user, "P@ssw0rd!")
+            ?? throw new InvalidOperationException();
+        user.EmailConfirmed = true;
+        user.LockoutEnabled = false;
+        await db.SaveChangesAsync();
+
+        return Ok();
+
+        }
+        //Next Creating Token Class.
+
+
+[HttpPost("City")]
         public async Task<IActionResult> SeedCity()
         {
             Dictionary<string, Country> countries = await db.Countries//.AsNoTracking()
@@ -104,5 +138,7 @@ namespace WeatherServer.Controllers
 
             return new JsonResult(countriesByName.Count);
         }
+
     }
+
 }

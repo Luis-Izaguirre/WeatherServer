@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace CountryModel;
 
-public partial class CountriesSilverContext : DbContext
+//Derived class, generic class in this case 
+public partial class CountriesSilverContext : IdentityDbContext<WorldCitiesUser>
 {
     public CountriesSilverContext()
     {
@@ -30,11 +32,14 @@ public partial class CountriesSilverContext : DbContext
         var config = builder.Build();
         optionsBuilder.UseSqlServer(config.GetConnectionString("DefaultConnection"));
     }
+    //We put all tables into database by changing context, updating OnModelCreating and creating migrations.
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
         modelBuilder.Entity<City>(entity =>
-        {
+        {    
             entity.HasKey(c => c.CityId).HasName("PK_City");
             entity.HasOne(d => d.Country).WithMany(p => p.Cities)
                 .OnDelete(DeleteBehavior.ClientSetNull)
