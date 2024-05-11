@@ -33,7 +33,7 @@ namespace WeatherServer.Controllers
             {
                 Success = true,
                 Message = "Sweettt!",
-                Token = jwtString
+                Token = jwtString,
             });
         }
     }
